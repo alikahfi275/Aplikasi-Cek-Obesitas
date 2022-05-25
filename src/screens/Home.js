@@ -64,6 +64,7 @@ class Home extends Component {
                         { size: 'L', stok: 32 },
                         { size: 'XL', stok: 12 },
                     ],
+                    price: 365000,
                 },
                 {
                     nama: 'martin',
@@ -78,6 +79,7 @@ class Home extends Component {
                         { size: 'L', stok: 32 },
                         { size: 'XL', stok: 23 },
                     ],
+                    price: 280000,
                 },
                 {
                     nama: 'marvel',
@@ -92,6 +94,7 @@ class Home extends Component {
                         { size: 'L', stok: 41 },
                         { size: 'XL', stok: 12 },
                     ],
+                    price: 350000,
                 },
                 {
                     nama: 'wiliam',
@@ -106,6 +109,7 @@ class Home extends Component {
                         { size: 'L', stok: 21 },
                         { size: 'XL', stok: 26 },
                     ],
+                    price: 200000,
                 },
             ]
         };
@@ -121,7 +125,8 @@ class Home extends Component {
                     <View style={styles.tittleHeader}>
                         <Text style={styles.txtHeader}>HOME</Text>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('Cart')}>
                         <Icon name="shopping-cart" size={22} color="#000000" />
                     </TouchableOpacity>
                 </View>
@@ -170,6 +175,7 @@ class Home extends Component {
                                     productTittle: item.productTittle,
                                     productDescription: item.productDescription,
                                     sizeList: item.sizeList,
+                                    price: item.price,
                                 })}>
                                 <Image source={{ uri: item.image }}
                                     style={styles.ImageCard}

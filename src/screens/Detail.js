@@ -9,15 +9,62 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Detail extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            itemSeleksi: '',
+            cart: [],
+        };
     }
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    getData = async () => {
+        try {
+            let value = await AsyncStorage.getItem('cart');
+            value = JSON.parse(value);
+
+            if (value !== null) {
+                this.setState({ cart: value });
+            }
+
+            console.log('Data Berhasil Diambil')
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    saveData = async (cart) => {
+        try {
+            await AsyncStorage.setItem('cart', JSON.stringify(cart),);
+            console.log('Data Berhasil Disimpan');
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    tambahItem = (namaProduk, size) => {
+        if (size == undefined) {
+            Alert.alert('WARNING', 'Silahkan Pilih Size');
+        } else {
+            let cart = this.state.cart;
+
+            cart.push({ namaProduk: namaProduk, size: size });
+            console.log(cart);
+            this.setState({ cart });
+            this.saveData(cart);
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -53,6 +100,17 @@ class Detail extends Component {
                     <View style={styles.txtDescription}>
                         <Text style={styles.txtDescJudul}>{this.props.route.params.productTittle}</Text>
                         <Text style={styles.txtDesc}>{this.props.route.params.productDescription}</Text>
+                        <Text style={[styles.txtDescJudul,
+                        {
+                            marginTop: 10,
+                            textAlign: 'right',
+                            marginRight: 10,
+                        }
+                        ]}>Rp. {
+                                this.props.route.params.price
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                            }</Text>
                     </View>
                     <Text style={styles.txtSizeTittle}>Size :</Text>
 
@@ -62,18 +120,29 @@ class Detail extends Component {
                         style={{
                             marginTop: 5,
                             marginBottom: 10,
-                            marginHorizontal: 15
+                            marginHorizontal: 15,
                         }}
                         renderItem={({ item, index }) =>
-                        (<TouchableOpacity>
-                            <View style={styles.eclipseSize}>
-                                <Text style={styles.txtSize}>{item.size}</Text>
-                            </View>
-                        </TouchableOpacity>)}
+                        (<TouchableOpacity
+                            style={[styles.eclipseSize,
+                            {
+                                borderColor: this.state.itemSeleksi == item ? "#00BCD4" : "#BDBDBD",
+                                borderWidth: this.state.itemSeleksi == item ? 3 : 1,
+
+                            }]}
+                            onPress={() => this.setState({ itemSeleksi: item })}>
+                            <Text style={styles.txtSize}>{item.size}</Text>
+                        </TouchableOpacity>
+                        )}
                     />
-
-
                 </ScrollView>
+                <TouchableOpacity style={styles.cart}
+                    onPress={() => this.tambahItem(
+                        this.props.route.params.productTittle,
+                        this.state.itemSeleksi.size
+                    )}>
+                    <Text>Add Chart</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -107,7 +176,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     txtBody: {
-        color: "#000000"
+        color: "#4D5156"
     },
     txtDescJudul: {
         color: "#000000",
@@ -115,11 +184,10 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     txtDesc: {
-        color: "#000000",
+        color: "#4D5156",
         textAlign: 'justify',
     },
     eclipseSize: {
-        borderWidth: 1,
         height: 50,
         width: 50,
         borderRadius: 50,
@@ -155,6 +223,15 @@ const styles = StyleSheet.create({
     txtDescription: {
         justifyContent: 'center',
         marginHorizontal: 15
+    },
+    cart: {
+        justifyContent: 'center',
+        marginHorizontal: 20,
+        backgroundColor: '#000000',
+        alignItems: 'center',
+        paddingVertical: 10,
+        marginBottom: 10,
+        borderRadius: 10
     },
 })
 
