@@ -10,6 +10,8 @@ import {
     FlatList
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome5';
+// import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Home extends Component {
     constructor(props) {
@@ -114,6 +116,10 @@ class Home extends Component {
             ]
         };
     }
+    componentDidMount() {
+        AsyncStorage.clear();
+    }
+
     render() {
         return (
             <View style={styles.container}>

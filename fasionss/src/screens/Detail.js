@@ -52,14 +52,46 @@ class Detail extends Component {
         }
     }
 
-    tambahItem = (namaProduk, size) => {
+    tambahItem = (namaProduk, size, harga, sisaStok, image) => {
         if (size == undefined) {
             Alert.alert('WARNING', 'Silahkan Pilih Size');
         } else {
             let cart = this.state.cart;
 
-            cart.push({ namaProduk: namaProduk, size: size });
-            console.log(cart);
+            if (cart.length == 0) {
+                cart.push({
+                    namaProduk: namaProduk,
+                    size: size,
+                    harga: harga,
+                    sisaStok: sisaStok,
+                    qty: 1,
+                    image: image,
+                });
+            } else {
+                for (let i = 0; i < cart.length; i++) {
+                    console.log(i);
+                    if (namaProduk == cart[i].namaProduk &&
+                        size == cart[i].size) {
+                        cart[i].qty++;
+                        console.log("Ketemu yang sama");
+                        break;
+                    }
+
+                    if (i == cart.length - 1) {
+                        console.log("Tidak ketemu yang sama");
+                        cart.push({
+                            namaProduk: namaProduk,
+                            size: size,
+                            harga: harga,
+                            sisaStok: sisaStok,
+                            qty: 1,
+                            image: image,
+                        });
+                    }
+                }
+            }
+
+            console.log("Cart And", cart);
             this.setState({ cart });
             this.saveData(cart);
         }
@@ -139,7 +171,10 @@ class Detail extends Component {
                 <TouchableOpacity style={styles.cart}
                     onPress={() => this.tambahItem(
                         this.props.route.params.productTittle,
-                        this.state.itemSeleksi.size
+                        this.state.itemSeleksi.size,
+                        this.props.route.params.price,
+                        this.state.itemSeleksi.stok,
+                        this.props.route.params.imageUrl,
                     )}>
                     <Text>Add Chart</Text>
                 </TouchableOpacity>
