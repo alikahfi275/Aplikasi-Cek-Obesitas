@@ -1,4 +1,4 @@
-package com.DMIcalculator.newarchitecture.components;
+package com.akael.cekobesitas.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

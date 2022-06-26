@@ -1,4 +1,4 @@
-package com.DMIcalculator.newarchitecture;
+package com.akael.cekobesitas.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.DMIcalculator.BuildConfig;
-import com.DMIcalculator.newarchitecture.components.MainComponentsRegistry;
-import com.DMIcalculator.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.akael.cekobesitas.BuildConfig;
+import com.akael.cekobesitas.newarchitecture.components.MainComponentsRegistry;
+import com.akael.cekobesitas.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
